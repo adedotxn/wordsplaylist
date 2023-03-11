@@ -1,0 +1,168 @@
+.main {
+  padding: 0rem 1rem;
+}
+
+.header {
+  display: grid;
+  place-items: center;
+  border-bottom: 1px solid aliceblue;
+  padding-bottom: .2rem;
+  padding-top: .7rem;
+}
+
+.header>h1 {
+  font-family: 'Climate Crisis', cursive;
+  text-shadow: 0px 0px 0.6rem green;
+  font-size: 1.8rem;
+  letter-spacing: .05rem;
+}
+
+.header>p {
+  margin-top: .5rem;
+  font-size: 1.1rem;
+  font-family: 'Syne', sans-serif;
+}
+
+.content {
+  margin-top: 3rem;
+  font-family: 'Syne', sans-serif;
+}
+
+.content {
+  display: grid;
+  /* display: grid;
+  place-items: center; */
+}
+
+
+
+.content form {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.content form {
+  display: grid;
+  gap: .5rem;
+}
+
+.content form label {
+  font-size: 1.2rem;
+}
+
+.content form input {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  background-color: #2b2d33;
+  border: 0px solid;
+  padding: .5rem 2rem .5rem 1rem;
+  font-size: 1.1rem;
+  color: aliceblue;
+  border: 1px solid grey;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+
+}
+
+.content form input:focus {
+  outline: 1px solid green;
+  border: 1px solid transparent;
+
+}
+
+.content form button {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border: 0px solid;
+  padding: .5rem 1rem;
+  font-size: 1.1rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  box-shadow: 0px 0px 0.6rem green;
+  cursor: pointer;
+}
+
+.content form button:disabled {
+  color: var(--bg);
+  background-color: rgb(173, 177, 180);
+}
+
+.song__wrapper {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.songs__list {
+  margin-top: .5rem;
+  display: grid;
+  place-items: center;
+}
+
+.songs {
+  list-style-type: none;
+  max-height: 30vh;
+  border: 1px solid gray;
+  overflow: scroll;
+  padding: 1rem 1.5rem;
+  border-radius: 4px;
+  display: grid;
+  gap: .5rem;
+  background-color: #1e1f23;
+}
+
+.songs p {
+  font-size: 1rem;
+}
+
+.songs p>span {
+  font-size: .85rem;
+  color: rgba(255, 255, 255, 0.621);
+}
+
+.songs li {
+  display: flex;
+  align-items: center;
+  gap: .75rem
+}
+
+
+.create_playlist>button {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-top: .5rem;
+  border: 0px solid;
+  padding: .5rem 1rem;
+  font-size: 1.1rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  background-color: green;
+  color: aliceblue;
+  cursor: pointer;
+  transition-property: box-shadow;
+  transition-duration: 350ms;
+}
+
+.create_playlist>button:hover {
+  box-shadow: 4px 4px aliceblue;
+
+}
+
+
+
+@media screen and (min-width : 768px) {
+  .song__wrapper {
+    width: 90vw;
+    height: 70vh;
+    grid-template-columns: repeat(3, 1fr)
+  }
+
+
+  .songs {
+    max-height: 60vh;
+    width: 25vw;
+  }
+}

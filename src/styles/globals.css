@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Inter:wght@200;300;400;500;600;700&family=Syne:wght@500;600;700;800&display=swap');
+
+:root {
+  --bg: #1d1e22;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: white;
+}
