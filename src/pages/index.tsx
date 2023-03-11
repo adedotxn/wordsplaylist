@@ -10,46 +10,9 @@ import toast from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export async function getStaticProps() {
-  const client_id = process.env.CLIENT_ID;
-  const client_secret = process.env.CLIENT_SECRET;
-
-  const authOptions = {
-    method: "POST",
-    headers: {
-      Authorization: "Basic " + btoa(client_id + ":" + client_secret),
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: "grant_type=client_credentials",
-  };
-
-  const token = await fetch(
-    "https://accounts.spotify.com/api/token",
-    authOptions
-  )
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-    })
-    .then((data) => {
-      const token = data.access_token;
-      return token;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
-  return {
-    props: {
-      token,
-    },
-  };
-}
-
-export default function Home({ token }: { token: string }) {
+export default function Home() {
   const { data: session, status } = useSession();
-  const accessToken = session?.accessToken ?? token;
+  const accessToken = session?.accessToken!;
   const [playlistWord, setPlaylistWord] = useState<string>("");
   const [songs, setSongs] = useState<SpotifySearchInterface[]>([]);
   const [playlist, setPlaylist] = useState<{ name: string; desc?: string }>({
@@ -84,14 +47,29 @@ export default function Home({ token }: { token: string }) {
   }
 
   async function getTracks(track: string) {
-    Spotify.searchTracks(track).then(
-      (data) => {
-        setSongs((prev: any[]) => [...prev, { chunkChar: track, data }]);
-      },
-      (err) => {
-        console.error("err", err);
-      }
-    );
+    Spotify.searchTracks(track)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+
+        if (!response.ok || response.status === 401) {
+          toast("Signing you in to spotify...");
+          return signIn("spotify");
+        }
+      })
+      .then(
+        (data) => {
+          if (data === undefined) return;
+          setSongs((prev: any[]) => [...prev, { chunkChar: track, data }]);
+        },
+        (err) => {
+          console.error("err", err);
+        }
+      )
+      .catch((error) => {
+        console.log("Errr", error);
+      });
   }
 
   const handleSubmit = (e: FormEvent) => {
@@ -132,7 +110,6 @@ export default function Home({ token }: { token: string }) {
     };
     Spotify.addTracksToPlaylist(playlistDetails)
       .then((data) => {
-        console.log(data);
         return toast.success("Tracks added to playlist");
       })
       .catch((error) => {
@@ -143,10 +120,10 @@ export default function Home({ token }: { token: string }) {
 
   async function createPlaylist() {
     if (allSelected.length === 0) {
-      return toast.error("No Track Has Been Selected");
+      return toast.error("0 track(s) has been selected. Select something");
     }
     if (session?.accessToken === undefined) {
-      toast.error("Please login to spotify again");
+      toast.error("You're not signed in. Signing you in...");
       return signIn("spotify");
     }
     if (playlist.name.length === 0) {
@@ -174,7 +151,6 @@ export default function Home({ token }: { token: string }) {
           return data;
         })
         .catch((error) => console.error(error));
-      console.log("createPlaylist", createPlaylist);
 
       if (createPlaylist && createPlaylist.id !== undefined) {
         addSelectedToPlaylist(createPlaylist.id);
@@ -271,26 +247,26 @@ export default function Home({ token }: { token: string }) {
                   </div>
                 ))}
               </section>
+
+              <div className={styles.create_playlist}>
+                <label htmlFor="playlistName"> Playlist Name</label>
+                <input
+                  value={playlist.name}
+                  onChange={(e) => setPlaylist({ name: e.target.value })}
+                  type="text"
+                  name="playlistName"
+                  placeholder={playlistWord}
+                />
+
+                <button onClick={createPlaylist}>Create Playlist</button>
+
+                {/* <button onClick={() => signIn("spotify")}> Sign In</button> */}
+                {/* <button onClick={() => signOut()}> Sign Out</button> */}
+                {/* <button onClick={getUser}> Get User</button> */}
+              </div>
             </>
           )}
         </section>
-
-        <div className={styles.create_playlist}>
-          <label htmlFor="playlistName"> Playlist Name</label>
-          <input
-            value={playlist.name}
-            onChange={(e) => setPlaylist({ name: e.target.value })}
-            type="text"
-            name="playlistName"
-            placeholder={playlistWord}
-          />
-
-          <button onClick={createPlaylist}>Create Playlist</button>
-
-          {/* <button onClick={() => signIn("spotify")}> Sign In</button> */}
-          {/* <button onClick={() => signOut()}> Sign Out</button> */}
-          {/* <button onClick={getUser}> Get User</button> */}
-        </div>
       </main>
     </>
   );

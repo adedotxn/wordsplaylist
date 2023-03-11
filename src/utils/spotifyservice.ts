@@ -44,10 +44,6 @@ export class Spotify {
         Authorization: `Bearer ${this.accessToken}`,
         "Content-Type": "application/json",
       },
-    }).then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
     });
   }
 
