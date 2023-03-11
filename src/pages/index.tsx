@@ -1,9 +1,7 @@
 import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import { FormEvent, useState } from "react";
-import Spotify from "spotify-web-api-js";
 import type { SpotifySearchInterface } from "@/types/interface";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Spotify as InternalSpotify } from "@/utils/spotifyservice";
