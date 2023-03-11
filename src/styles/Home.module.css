@@ -1,5 +1,5 @@
 .main {
-  padding: 0rem 1rem;
+  padding: 0rem 1rem 3rem 1rem;
 }
 
 .header {
@@ -51,20 +51,24 @@
   font-size: 1.2rem;
 }
 
-.content form input {
+.content form input,
+.create_playlist input {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   background-color: #2b2d33;
   border: 0px solid;
-  padding: .5rem 2rem .5rem 1rem;
-  font-size: 1.1rem;
   color: aliceblue;
   border: 1px solid grey;
   border-radius: 4px;
   font-family: 'Inter', sans-serif;
-
 }
+
+.content form input {
+  padding: .5rem 2rem .5rem 1rem;
+  font-size: 1.1rem;
+}
+
 
 .content form input:focus {
   outline: 1px solid green;
@@ -129,6 +133,18 @@
 }
 
 
+.create_playlist {
+  margin-top: 1rem;
+  display: grid;
+  gap: .5rem;
+  place-items: center;
+}
+
+.create_playlist label {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+}
+
 .create_playlist>button {
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -151,6 +167,11 @@
 
 }
 
+.create_playlist input {
+  padding: .3rem 2rem .3rem 1rem;
+  font-size: 1rem;
+}
+
 
 
 @media screen and (min-width : 768px) {
@@ -164,5 +185,14 @@
   .songs {
     max-height: 60vh;
     width: 25vw;
+  }
+
+  .create_playlist label {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+  }
+
+  .create_playlist>button {
+    font-size: 1.3rem;
   }
 }

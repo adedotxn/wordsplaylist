@@ -22,6 +22,35 @@ export class Spotify {
     return this.refreshToken;
   }
 
+  getCurrentUser() {
+    return fetch("https://api.spotify.com/v1/me", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+    });
+  }
+
+  searchTracks(query: string, type: string[] = []) {
+    const _type = type.length === 0 ? "track" : type.join(",");
+    return fetch(`https://api.spotify.com/v1/search?q=${query}&type=${_type}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+    });
+  }
+
   createPlaylist(parans: {
     name: string;
     desc?: string;
@@ -42,30 +71,32 @@ export class Spotify {
           public: parans.public ?? false,
         }),
       }
-    );
+    ).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+    });
   }
 
   addTracksToPlaylist(params: { playlist_id: string; track_uris: string[] }) {
-    if (this.accessToken === undefined) return "No access token set";
-
-    fetch(`https://api.spotify.com/v1/playlists/${params.playlist_id}/tracks`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        uris: params.track_uris,
-        position: 0,
-      }),
-    })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data) => {
-        console.log("data", data);
-      })
-      .catch((error) => {
-        // handle the error
-      });
+    return fetch(
+      `https://api.spotify.com/v1/playlists/${params.playlist_id}/tracks`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uris: params.track_uris,
+          position: 0,
+        }),
+      }
+    ).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+    });
   }
 }
 
