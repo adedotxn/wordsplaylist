@@ -30,8 +30,7 @@
 
 .content {
   display: grid;
-  /* display: grid;
-  place-items: center; */
+  place-items: center;
 }
 
 
@@ -40,33 +39,35 @@
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
+  display: grid;
+  place-items: center;
+  gap: .7rem;
+
 }
 
-.content form {
-  display: grid;
-  gap: .5rem;
-}
 
 .content form label {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .content form input,
 .create_playlist input {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
   background-color: #2b2d33;
   border: 0px solid;
   color: aliceblue;
   border: 1px solid grey;
   border-radius: 4px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  width: 90vw;
 }
 
 .content form input {
   padding: .5rem 2rem .5rem 1rem;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
+  width: 90vw;
 }
 
 
@@ -81,12 +82,13 @@
   width: -moz-fit-content;
   width: fit-content;
   border: 0px solid;
-  padding: .5rem 1rem;
-  font-size: 1.1rem;
+  padding: .5rem 2rem;
+  font-size: 1.2rem;
   font-family: 'Syne', sans-serif;
-  font-weight: 600;
-  box-shadow: 0px 0px 0.6rem green;
+  font-weight: 800;
+  box-shadow: 0px 0px 1rem green;
   cursor: pointer;
+  background-color: white;
 }
 
 .content form button:disabled {
@@ -97,6 +99,7 @@
 .song__wrapper {
   display: grid;
   gap: 1.5rem;
+  margin-top: 1rem;
 }
 
 .songs__list {
@@ -134,7 +137,7 @@
 
 
 .create_playlist {
-  margin-top: 1rem;
+  margin-top: 2rem;
   display: grid;
   gap: .5rem;
   place-items: center;
@@ -143,6 +146,8 @@
 .create_playlist label {
   font-family: 'Syne', sans-serif;
   font-size: 1.05rem;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .create_playlist>button {
@@ -170,6 +175,7 @@
 .create_playlist input {
   padding: .3rem 2rem .3rem 1rem;
   font-size: 1rem;
+
 }
 
 
@@ -177,7 +183,7 @@
 @media screen and (min-width : 768px) {
   .song__wrapper {
     width: 90vw;
-    height: 70vh;
+    /* height: 70vh; */
     grid-template-columns: repeat(3, 1fr)
   }
 
@@ -185,6 +191,15 @@
   .songs {
     max-height: 60vh;
     width: 25vw;
+  }
+
+
+  .content form input,
+  .create_playlist input {
+    width: 80vw;
+    font-size: 1.35rem;
+    padding: .65rem 2rem .65rem 1rem;
+
   }
 
   .create_playlist label {
