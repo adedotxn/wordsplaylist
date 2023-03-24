@@ -7,6 +7,9 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { Spotify as InternalSpotify } from "@/utils/spotifyservice";
 import { PlaylistInterface } from "@/types/playlist";
 import toast from "react-hot-toast";
+import Modal from "@/component/modal";
+import Link from "next/link";
+import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +23,10 @@ export default function Home() {
     desc: "",
   });
 
+  const [modal, setModal] = useState(false);
+  const closeModal = () => {
+    setModal(false);
+  };
   const Spotify = new InternalSpotify();
   Spotify.setAccessToken(accessToken);
 
@@ -54,14 +61,14 @@ export default function Home() {
         }
 
         if (!response.ok || response.status === 401) {
-          toast("Signing you in to spotify...");
-          return signIn("spotify");
+          return setModal(true);
         }
       })
       .then(
         (data) => {
           if (data === undefined) return;
           setSongs((prev: any[]) => [...prev, { chunkChar: track, data }]);
+          console.log(data);
         },
         (err) => {
           console.error("err", err);
@@ -122,17 +129,13 @@ export default function Home() {
     if (allSelected.length === 0) {
       return toast.error("0 track(s) has been selected. Select something");
     }
-    if (session?.accessToken === undefined) {
-      toast.error("You're not signed in. Signing you in...");
-      return signIn("spotify");
-    }
+
     if (playlist.name.length === 0) {
       return toast.error("Type in a name for your playlist");
     }
 
-    if (status === "unauthenticated") {
-      toast("You're not signed in. Trying to sign you in");
-      return signIn("spotify");
+    if (session?.accessToken === undefined || status === "unauthenticated") {
+      return setModal(true);
     }
 
     const user = await getUser();
@@ -177,6 +180,35 @@ export default function Home() {
           </p>
         </header>
 
+        <section className={styles.status}>
+          {status === "unauthenticated" ? (
+            <button onClick={() => signIn("spotify")}>
+              <Image
+                src="/spotify.svg"
+                alt="spotify_logo"
+                width={25}
+                height={25}
+              />
+              Sign In your Spotify
+            </button>
+          ) : status === "authenticated" ? (
+            <button
+              onClick={() => {
+                signOut();
+                toast("Signing you out");
+              }}
+            >
+              <Image
+                src="/spotify.svg"
+                alt="spotify_logo"
+                width={25}
+                height={25}
+              />
+              Sign Out your Spotify
+            </button>
+          ) : null}
+        </section>
+
         <section className={styles.content}>
           <form action="" onSubmit={handleSubmit}>
             <label htmlFor="words">
@@ -191,6 +223,12 @@ export default function Home() {
             />
 
             <button disabled={playlistWord.length === 0} type="submit">
+              <Image
+                src="/spotify.svg"
+                alt="spotify_logo"
+                width={25}
+                height={25}
+              />
               Search Spotify
             </button>
           </form>
@@ -200,7 +238,7 @@ export default function Home() {
               <section className={styles.song__wrapper}>
                 {songs.map((tracks, index) => (
                   <div className={styles.songs__list} key={index}>
-                    <h1>For: {tracks.chunkChar}</h1>
+                    <h1>For: {`"${tracks.chunkChar}"`}</h1>
 
                     <ul className={styles.songs}>
                       {tracks.data.tracks.items.map((track, idx) => (
@@ -214,32 +252,34 @@ export default function Home() {
                                 type="checkbox"
                                 checked={selected[track.uri]}
                               />
-                              <p>
-                                {track.name}{" "}
-                                {track.artists.map((artist, idx: number) => (
-                                  <>
-                                    {track.artists.length === 1 ? (
-                                      <span key={artist.name}>
-                                        by {artist.name}.
-                                      </span>
-                                    ) : null}
+                              <Link href={track.external_urls.spotify}>
+                                <>
+                                  {track.name}{" "}
+                                  {track.artists.map((artist, idx: number) => (
+                                    <>
+                                      {track.artists.length === 1 ? (
+                                        <span key={artist.name}>
+                                          by {artist.name}.
+                                        </span>
+                                      ) : null}
 
-                                    {track.artists.length > 1 &&
-                                    idx !== track.artists.length - 1 ? (
-                                      <span key={artist.name}>
-                                        by {artist.name},{" "}
-                                      </span>
-                                    ) : null}
+                                      {track.artists.length > 1 &&
+                                      idx !== track.artists.length - 1 ? (
+                                        <span key={artist.name}>
+                                          by {artist.name},{" "}
+                                        </span>
+                                      ) : null}
 
-                                    {track.artists.length > 1 &&
-                                    idx === track.artists.length - 1 ? (
-                                      <span key={artist.name}>
-                                        and {artist.name}.
-                                      </span>
-                                    ) : null}
-                                  </>
-                                ))}
-                              </p>
+                                      {track.artists.length > 1 &&
+                                      idx === track.artists.length - 1 ? (
+                                        <span key={artist.name}>
+                                          and {artist.name}.
+                                        </span>
+                                      ) : null}
+                                    </>
+                                  ))}
+                                </>
+                              </Link>
                             </li>
                           ) : null}
                         </>
@@ -259,7 +299,15 @@ export default function Home() {
                   placeholder={playlistWord}
                 />
 
-                <button onClick={createPlaylist}>Create Playlist</button>
+                <button onClick={createPlaylist}>
+                  <Image
+                    src="/spotify.svg"
+                    alt="spotify_logo"
+                    width={25}
+                    height={25}
+                  />
+                  Create Playlist
+                </button>
 
                 {/* <button onClick={() => signIn("spotify")}> Sign In</button> */}
                 {/* <button onClick={() => signOut()}> Sign Out</button> */}
@@ -269,6 +317,8 @@ export default function Home() {
           )}
         </section>
       </main>
+
+      {modal ? <Modal closeModal={closeModal} /> : null}
     </>
   );
 }

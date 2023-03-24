@@ -1,0 +1,75 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000ac;
+}
+
+.modal {
+  display: grid;
+  place-items: center;
+  z-index: 3;
+  height: 100vh;
+}
+
+.modal div {
+  font-family: "Syne", sans-serif;
+  width: 90vw;
+  display: grid;
+  text-align: center;
+  place-items: center;
+  gap: 1rem;
+  background-color: rgb(6, 46, 9);
+  padding: .5rem;
+  border-radius: 4px;
+  position: relative;
+}
+
+.modal div span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 2rem;
+}
+
+.modal div .close {
+  display: flex;
+  position: absolute;
+  right:.5rem;
+  top:.7rem;
+  border: 0px solid;
+  padding: .2rem .4rem;
+  font-weight: 800;
+
+}
+.modal div .sign {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-top: 0.5rem;
+  border: 0px solid;
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+  font-family: "Syne", sans-serif;
+  font-weight: 600;
+  background-color: green;
+  color: aliceblue;
+  cursor: pointer;
+  transition-property: box-shadow;
+  transition-duration: 350ms;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+
+.modal div .sign:hover {
+  box-shadow: 4px 4px aliceblue;
+
+}
+
+@media screen and (min-width: 768px) {
+  .modal div {
+    width: 40vw;
+  }
+}

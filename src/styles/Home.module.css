@@ -31,6 +31,7 @@
 .content {
   display: grid;
   place-items: center;
+  margin-top: 4rem;
 }
 
 
@@ -89,6 +90,9 @@
   box-shadow: 0px 0px 1rem green;
   cursor: pointer;
   background-color: white;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
 }
 
 .content form button:disabled {
@@ -102,10 +106,19 @@
   margin-top: 1rem;
 }
 
+
+
 .songs__list {
   margin-top: .5rem;
   display: grid;
   place-items: center;
+}
+
+.songs__list h1 {
+  display: flex;
+  align-items: center;
+  gap:.4rem;
+  padding-bottom: .5rem;
 }
 
 .songs {
@@ -120,11 +133,17 @@
   background-color: #1e1f23;
 }
 
-.songs p {
+.songs a {
+  color: white;
   font-size: 1rem;
+  text-decoration: none;
 }
 
-.songs p>span {
+.songs a:hover{
+  text-decoration: underline;
+}
+
+.songs a>span {
   font-size: .85rem;
   color: rgba(255, 255, 255, 0.621);
 }
@@ -150,7 +169,8 @@
   font-weight: 600;
 }
 
-.create_playlist>button {
+.create_playlist>button, 
+.status  > button {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
@@ -165,9 +185,14 @@
   cursor: pointer;
   transition-property: box-shadow;
   transition-duration: 350ms;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
 }
 
-.create_playlist>button:hover {
+
+.create_playlist>button:hover, 
+.status  > button:hover {
   box-shadow: 4px 4px aliceblue;
 
 }
@@ -177,6 +202,12 @@
   font-size: 1rem;
 
 }
+
+.status {
+  display: flex;
+  justify-content: flex-end;
+}
+
 
 
 
